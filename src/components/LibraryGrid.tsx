@@ -71,10 +71,10 @@ export const LibraryGrid: React.FC<LibraryGridProps> = ({
     return (
       <div className="p-6 grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6 gap-4">
         {Array.from({ length: 12 }).map((_, i) => (
-          <div key={i} className="surface-card p-3 rounded-card animate-pulse space-y-3">
-            <div className="aspect-[2/3] w-full bg-vg-elevated rounded-button" />
-            <div className="h-4 bg-vg-elevated rounded w-3/4" />
-            <div className="h-3 bg-vg-elevated rounded w-1/2" />
+          <div key={i} className="surface-card p-3 rounded-card space-y-3">
+            <div className="aspect-[2/3] w-full shimmer-gradient rounded-button" />
+            <div className="h-4 shimmer-gradient rounded w-3/4" />
+            <div className="h-3 shimmer-gradient rounded w-1/2" />
           </div>
         ))}
       </div>
@@ -84,19 +84,23 @@ export const LibraryGrid: React.FC<LibraryGridProps> = ({
   // Empty library state
   if (allComics && allComics.length === 0) {
     return (
-      <div className="flex flex-col items-center justify-center min-h-[60vh] p-8 text-center select-none">
-        <div className="w-20 h-20 rounded-full bg-vg-tertiary border border-vg-border flex items-center justify-center text-text-muted mb-6">
-          <BookOpen className="w-10 h-10" />
+      <div className="flex flex-col items-center justify-center min-h-[60vh] p-8 text-center select-none animate-fade-in">
+        <div className="relative mb-8">
+          {/* Outer glow halo */}
+          <div className="absolute inset-0 w-24 h-24 -m-2 rounded-full bg-accent-blue/10 animate-pulse-subtle" />
+          <div className="w-20 h-20 rounded-full bg-gradient-to-br from-vg-tertiary to-vg-elevated border border-vg-border flex items-center justify-center text-text-muted relative">
+            <BookOpen className="w-10 h-10" />
+          </div>
         </div>
         <h2 className="text-2xl font-bold text-text-primary tracking-tight mb-2">
           Your library is empty
         </h2>
-        <p className="text-sm text-text-secondary max-w-md mb-6">
-          Drop <code>.cbz</code> or <code>.cbr</code> comic files anywhere on the screen to begin building your collection.
+        <p className="text-sm text-text-secondary max-w-md mb-8 leading-relaxed">
+          Drop <code className="px-1.5 py-0.5 rounded bg-vg-tertiary text-accent-blue text-xs font-mono">.cbz</code> or <code className="px-1.5 py-0.5 rounded bg-vg-tertiary text-accent-blue text-xs font-mono">.cbr</code> comic files anywhere on the screen to begin building your collection.
         </p>
         <button
           onClick={onOpenImport}
-          className="inline-flex items-center space-x-2 px-5 py-2.5 rounded-button bg-accent-blue text-white font-medium text-sm hover:bg-accent-blue/90 transition-colors shadow-lg"
+          className="inline-flex items-center space-x-2 px-6 py-3 rounded-button bg-accent-blue text-white font-semibold text-sm hover:bg-accent-blue/90 hover:shadow-[0_0_24px_rgba(10,132,255,0.35)] transition-all duration-200 shadow-lg"
         >
           <Upload className="w-4 h-4" />
           <span>Import Comic Files</span>
@@ -108,8 +112,8 @@ export const LibraryGrid: React.FC<LibraryGridProps> = ({
   // Filter returned no results state
   if (filteredComics.length === 0) {
     return (
-      <div className="flex flex-col items-center justify-center min-h-[50vh] p-8 text-center select-none">
-        <div className="w-16 h-16 rounded-full bg-vg-tertiary border border-vg-border flex items-center justify-center text-text-muted mb-4">
+      <div className="flex flex-col items-center justify-center min-h-[50vh] p-8 text-center select-none animate-fade-in">
+        <div className="w-16 h-16 rounded-full bg-gradient-to-br from-vg-tertiary to-vg-elevated border border-vg-border flex items-center justify-center text-text-muted mb-4">
           <Search className="w-8 h-8" />
         </div>
         <h3 className="text-lg font-bold text-text-primary mb-1">No comics found</h3>

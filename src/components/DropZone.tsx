@@ -119,7 +119,7 @@ export const DropZone: React.FC<DropZoneProps> = ({
 
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center p-4 surface-overlay backdrop-blur-sm animate-fade-in select-none">
-      <div className="surface-elevated max-w-lg w-full p-6 rounded-modal border border-vg-border-strong relative shadow-2xl">
+      <div className="surface-elevated max-w-lg w-full p-6 rounded-modal border border-vg-border-strong relative shadow-2xl animate-scale-in">
         {/* Close Button */}
         {onClose && !isProcessing && (
           <button
@@ -147,9 +147,9 @@ export const DropZone: React.FC<DropZoneProps> = ({
           onDragLeave={handleDragLeave}
           onDrop={handleDrop}
           onClick={() => !isProcessing && fileInputRef.current?.click()}
-          className={`p-8 rounded-card border-2 border-dashed transition-all duration-150 text-center cursor-pointer flex flex-col items-center justify-center min-h-[200px] ${
+          className={`p-8 rounded-card border-2 border-dashed transition-all duration-200 text-center cursor-pointer flex flex-col items-center justify-center min-h-[200px] ${
             isDragging
-              ? 'border-accent-blue bg-accent-blue/10 scale-[0.99]'
+              ? 'border-accent-blue bg-accent-blue/10 scale-[0.98] shadow-[inset_0_0_30px_rgba(10,132,255,0.08)]'
               : 'border-vg-border-strong bg-vg-secondary hover:bg-vg-tertiary hover:border-text-secondary'
           } ${isProcessing ? 'pointer-events-none opacity-80' : ''}`}
         >
@@ -172,7 +172,7 @@ export const DropZone: React.FC<DropZoneProps> = ({
             </div>
           ) : (
             <div className="flex flex-col items-center space-y-3">
-              <div className="w-12 h-12 rounded-full bg-vg-tertiary flex items-center justify-center text-accent-blue border border-vg-border">
+              <div className="w-14 h-14 rounded-full bg-gradient-to-br from-vg-tertiary to-vg-elevated flex items-center justify-center text-accent-blue border border-vg-border animate-bounce-subtle">
                 <Upload className="w-6 h-6" />
               </div>
               <div>
@@ -187,7 +187,7 @@ export const DropZone: React.FC<DropZoneProps> = ({
                 {['.cbz', '.cbr', '.zip', '.rar'].map((ext) => (
                   <span
                     key={ext}
-                    className="px-2 py-0.5 rounded text-[10px] font-mono font-semibold uppercase bg-vg-tertiary text-text-secondary border border-vg-border"
+                    className="px-2.5 py-1 rounded text-[10px] font-mono font-semibold uppercase bg-vg-tertiary text-text-secondary border border-vg-border tracking-wide"
                   >
                     {ext}
                   </span>

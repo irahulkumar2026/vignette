@@ -142,7 +142,7 @@ export const CommandPalette: React.FC<CommandPaletteProps> = ({
     >
       <div
         onClick={(e) => e.stopPropagation()}
-        className="surface-elevated max-w-xl w-full rounded-modal border border-vg-border-strong overflow-hidden shadow-2xl animate-fade-in"
+        className="surface-elevated max-w-xl w-full rounded-modal border border-vg-border-strong overflow-hidden shadow-2xl animate-scale-in"
       >
         {/* Search Input Bar */}
         <div className="p-4 border-b border-vg-border flex items-center space-x-3">
@@ -186,12 +186,16 @@ export const CommandPalette: React.FC<CommandPaletteProps> = ({
                         onSelectComic(comic);
                       }}
                       onMouseEnter={() => setSelectedIndex(idx)}
-                      className={`flex items-center justify-between px-3 py-2 rounded-button text-xs cursor-pointer transition-colors ${
+                      className={`flex items-center justify-between px-3 py-2 rounded-button text-xs cursor-pointer transition-all duration-100 relative ${
                         isSelected
                           ? 'bg-vg-active text-text-primary font-medium'
                           : 'text-text-secondary hover:text-text-primary hover:bg-vg-tertiary'
                       }`}
                     >
+                      {/* Selected indicator bar */}
+                      {isSelected && (
+                        <span className="absolute left-0 top-1.5 bottom-1.5 w-0.5 bg-accent-blue rounded-r" />
+                      )}
                       <div className="flex items-center space-x-3 min-w-0">
                         <BookOpen className={`w-4 h-4 flex-shrink-0 ${isSelected ? 'text-accent-blue' : 'text-text-muted'}`} />
                         <span className="truncate">{comic.title}</span>
@@ -223,12 +227,16 @@ export const CommandPalette: React.FC<CommandPaletteProps> = ({
                       key={act.id}
                       onClick={act.run}
                       onMouseEnter={() => setSelectedIndex(globalIdx)}
-                      className={`flex items-center justify-between px-3 py-2 rounded-button text-xs cursor-pointer transition-colors ${
+                      className={`flex items-center justify-between px-3 py-2 rounded-button text-xs cursor-pointer transition-all duration-100 relative ${
                         isSelected
                           ? 'bg-vg-active text-text-primary font-medium'
                           : 'text-text-secondary hover:text-text-primary hover:bg-vg-tertiary'
                       }`}
                     >
+                      {/* Selected indicator bar */}
+                      {isSelected && (
+                        <span className="absolute left-0 top-1.5 bottom-1.5 w-0.5 bg-accent-blue rounded-r" />
+                      )}
                       <div className="flex items-center space-x-3 min-w-0">
                         <Icon className={`w-4 h-4 flex-shrink-0 ${isSelected ? 'text-accent-blue' : 'text-text-muted'}`} />
                         <span className="truncate">{act.label}</span>
@@ -249,12 +257,12 @@ export const CommandPalette: React.FC<CommandPaletteProps> = ({
         </div>
 
         {/* Footer shortcuts hint */}
-        <div className="px-4 py-2 bg-vg-secondary border-t border-vg-border flex items-center justify-between text-[11px] text-text-muted font-mono">
+        <div className="px-4 py-2.5 bg-vg-secondary border-t border-vg-border flex items-center justify-between text-[11px] text-text-muted font-mono">
           <div className="flex items-center space-x-3">
-            <span><kbd className="px-1 py-0.5 rounded bg-vg-tertiary">↑↓</kbd> navigate</span>
-            <span><kbd className="px-1 py-0.5 rounded bg-vg-tertiary">↵</kbd> select</span>
+            <span><kbd className="px-1.5 py-0.5 rounded bg-vg-tertiary border border-vg-border shadow-[inset_0_-1px_0_rgba(0,0,0,0.2)] text-text-secondary">↑↓</kbd> navigate</span>
+            <span><kbd className="px-1.5 py-0.5 rounded bg-vg-tertiary border border-vg-border shadow-[inset_0_-1px_0_rgba(0,0,0,0.2)] text-text-secondary">↵</kbd> select</span>
           </div>
-          <span><kbd className="px-1 py-0.5 rounded bg-vg-tertiary">esc</kbd> close</span>
+          <span><kbd className="px-1.5 py-0.5 rounded bg-vg-tertiary border border-vg-border shadow-[inset_0_-1px_0_rgba(0,0,0,0.2)] text-text-secondary">esc</kbd> close</span>
         </div>
       </div>
     </div>

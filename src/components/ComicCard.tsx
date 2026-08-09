@@ -65,7 +65,7 @@ export const ComicCard: React.FC<ComicCardProps> = ({ comic, onOpenComic, viewMo
       <>
         <div
           onClick={() => onOpenComic(comic)}
-          className="surface-card p-3 flex items-center justify-between gap-4 surface-card-hover cursor-pointer border border-vg-border rounded-card select-none group"
+          className="surface-card p-3 flex items-center justify-between gap-4 surface-card-hover cursor-pointer border border-vg-border rounded-card select-none group card-shadow-hover"
         >
           <div className="flex items-center space-x-3 min-w-0">
             {/* Cover Thumbnail */}
@@ -147,19 +147,23 @@ export const ComicCard: React.FC<ComicCardProps> = ({ comic, onOpenComic, viewMo
     <>
       <div
         onClick={() => onOpenComic(comic)}
-        className="surface-card p-3 flex flex-col justify-between surface-card-hover cursor-pointer border border-vg-border rounded-card select-none group relative"
+        className="surface-card p-3 flex flex-col justify-between surface-card-hover cursor-pointer border border-vg-border rounded-card select-none group relative card-shadow-hover"
       >
         {/* Top Media Cover Area */}
         <div>
           <div className="relative aspect-[2/3] w-full bg-vg-secondary rounded-button overflow-hidden border border-vg-border mb-3 flex items-center justify-center">
             {coverUrl ? (
-              <img
-                src={coverUrl}
-                alt={comic.title}
-                className="w-full h-full object-cover transition-transform duration-300 group-hover:scale-[1.02] gpu-image-render"
-                loading="lazy"
-                decoding="async"
-              />
+              <>
+                <img
+                  src={coverUrl}
+                  alt={comic.title}
+                  className="w-full h-full object-cover transition-transform duration-300 group-hover:scale-[1.03] gpu-image-render"
+                  loading="lazy"
+                  decoding="async"
+                />
+                {/* Bottom gradient overlay for text readability */}
+                <div className="absolute inset-x-0 bottom-0 h-16 bg-gradient-to-t from-black/40 to-transparent pointer-events-none rounded-b-button" />
+              </>
             ) : (
               <div className="flex flex-col items-center justify-center p-4 text-center">
                 <BookOpen className="w-8 h-8 text-text-muted mb-2" />
@@ -254,7 +258,7 @@ export const ComicCard: React.FC<ComicCardProps> = ({ comic, onOpenComic, viewMo
           {/* 4px Progress Track */}
           <div className="w-full h-1 bg-vg-elevated rounded-full overflow-hidden">
             <div
-              className="h-full bg-accent-blue rounded-full transition-all duration-300"
+              className={`h-full bg-accent-blue rounded-full transition-all duration-300 ${progressPercent > 0 ? 'shadow-[0_0_6px_rgba(10,132,255,0.4)]' : ''}`}
               style={{ width: `${progressPercent}%` }}
             />
           </div>

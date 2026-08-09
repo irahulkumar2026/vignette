@@ -38,7 +38,7 @@ export const DeleteConfirmModal: React.FC<DeleteConfirmModalProps> = ({
 
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center p-4 surface-overlay backdrop-blur-sm animate-fade-in select-none">
-      <div className="surface-elevated max-w-md w-full p-6 rounded-modal border border-vg-border-strong relative shadow-2xl">
+      <div className="surface-elevated max-w-md w-full p-6 rounded-modal border border-vg-border-strong relative shadow-2xl animate-scale-in">
         {/* Close Button */}
         <button
           onClick={onClose}
@@ -48,7 +48,7 @@ export const DeleteConfirmModal: React.FC<DeleteConfirmModalProps> = ({
         </button>
 
         {/* Warning Icon Badge */}
-        <div className="w-12 h-12 rounded-full bg-accent-red/20 text-accent-red flex items-center justify-center mb-4 border border-accent-red/30">
+        <div className="w-12 h-12 rounded-full bg-accent-red/20 text-accent-red flex items-center justify-center mb-4 border border-accent-red/30 animate-pulse-subtle">
           <AlertTriangle className="w-6 h-6" />
         </div>
 
@@ -91,7 +91,7 @@ export const DeleteConfirmModal: React.FC<DeleteConfirmModalProps> = ({
           </button>
           <button
             onClick={handleConfirmHardPurge}
-            className="px-4 py-2 rounded-button bg-accent-red text-white text-xs font-semibold hover:bg-accent-red/90 transition-colors shadow-sm flex items-center space-x-1.5"
+            className="px-4 py-2 rounded-button bg-accent-red text-white text-xs font-semibold hover:bg-accent-red/90 hover:shadow-[0_0_16px_rgba(255,69,58,0.35)] transition-all duration-200 shadow-sm flex items-center space-x-1.5"
           >
             <Trash2 className="w-4 h-4" />
             <span>Hard Purge & Delete</span>

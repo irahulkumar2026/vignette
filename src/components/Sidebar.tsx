@@ -59,7 +59,7 @@ export const Sidebar: React.FC<SidebarProps> = ({
             <div className="w-7 h-7 rounded-button bg-accent-blue flex items-center justify-center text-white">
               <BookOpen className="w-4 h-4" />
             </div>
-            <span className="text-base font-bold tracking-tight text-text-primary">
+            <span className="text-base font-extrabold tracking-widest text-text-primary uppercase bg-gradient-to-r from-text-primary via-accent-blue to-text-primary bg-[length:200%_100%] bg-clip-text" style={{ WebkitBackgroundClip: 'text' }}>
               VIGNETTE
             </span>
           </div>
@@ -86,7 +86,7 @@ export const Sidebar: React.FC<SidebarProps> = ({
       <div className="p-3">
         <button
           onClick={onOpenImport}
-          className={`w-full flex items-center justify-center space-x-2 py-2 px-3 rounded-button bg-accent-blue text-white font-medium text-xs hover:bg-accent-blue/90 transition-colors ${
+          className={`w-full flex items-center justify-center space-x-2 py-2 px-3 rounded-button bg-accent-blue text-white font-medium text-xs hover:bg-accent-blue/90 hover:shadow-[0_0_16px_rgba(10,132,255,0.3)] transition-all duration-200 ${
             isCollapsed ? 'px-0' : ''
           }`}
           title="Import Comic Archives"
@@ -117,9 +117,9 @@ export const Sidebar: React.FC<SidebarProps> = ({
                 } ${isCollapsed ? 'justify-center px-0' : ''}`}
                 title={isCollapsed ? item.label : undefined}
               >
-                {/* 3px Active Indicator Bar */}
+                {/* 3px Active Indicator Bar with smooth transition */}
                 {isActive && !isCollapsed && (
-                  <span className="absolute left-0 top-1.5 bottom-1.5 w-1 bg-accent-blue rounded-r" />
+                  <span className="absolute left-0 top-1.5 bottom-1.5 w-1 bg-accent-blue rounded-r animate-scale-in" />
                 )}
                 <Icon className={`w-4 h-4 flex-shrink-0 ${isActive ? 'text-accent-blue' : ''}`} />
                 {!isCollapsed && <span>{item.label}</span>}
@@ -190,8 +190,10 @@ export const Sidebar: React.FC<SidebarProps> = ({
 
         {/* Version Badge */}
         {!isCollapsed && (
-          <div className="px-3 pt-2 text-[10px] text-text-muted font-mono">
-            Vignette v0.1.0 • PWA
+          <div className="px-3 pt-2">
+            <span className="inline-flex items-center px-2 py-0.5 rounded-full bg-vg-tertiary border border-vg-border text-[10px] text-text-muted font-mono">
+              Vignette v0.1.0 • PWA
+            </span>
           </div>
         )}
       </div>

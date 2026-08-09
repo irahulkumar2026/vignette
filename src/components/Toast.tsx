@@ -40,25 +40,34 @@ export const Toast: React.FC<ToastProps> = ({ toast, onDismiss }) => {
 
   return (
     <div className="fixed bottom-6 left-1/2 -translate-x-1/2 z-50 max-w-md w-full px-4 pointer-events-none select-none animate-slide-up">
-      <div className="surface-elevated p-3.5 rounded-modal border border-vg-border-strong shadow-2xl flex items-center justify-between gap-3 pointer-events-auto bg-vg-secondary/95 backdrop-blur-md">
-        <div className="flex items-center space-x-3 min-w-0">
-          <div className="p-1 rounded-full bg-vg-tertiary border border-vg-border">
-            {getIcon()}
-          </div>
-          <div className="min-w-0">
-            <h4 className="text-xs font-bold text-text-primary truncate">{toast.title}</h4>
-            {toast.description && (
-              <p className="text-[11px] text-text-secondary truncate mt-0.5">{toast.description}</p>
-            )}
-          </div>
-        </div>
+      <div className="surface-elevated rounded-modal border border-vg-border-strong shadow-2xl flex items-stretch pointer-events-auto bg-vg-secondary/95 backdrop-blur-md overflow-hidden">
+        {/* Colored accent bar */}
+        <div className={`w-1 flex-shrink-0 ${
+          toast.type === 'error' ? 'bg-accent-red' :
+          toast.type === 'info' ? 'bg-accent-blue' :
+          'bg-accent-green'
+        }`} />
 
-        <button
-          onClick={onDismiss}
-          className="p-1 rounded-button text-text-muted hover:text-text-primary hover:bg-vg-elevated transition-colors flex-shrink-0"
-        >
-          <X className="w-3.5 h-3.5" />
-        </button>
+        <div className="flex items-center justify-between gap-3 p-3.5 flex-1 min-w-0">
+          <div className="flex items-center space-x-3 min-w-0">
+            <div className="p-1 rounded-full bg-vg-tertiary border border-vg-border">
+              {getIcon()}
+            </div>
+            <div className="min-w-0">
+              <h4 className="text-xs font-bold text-text-primary truncate">{toast.title}</h4>
+              {toast.description && (
+                <p className="text-[11px] text-text-secondary truncate mt-0.5">{toast.description}</p>
+              )}
+            </div>
+          </div>
+
+          <button
+            onClick={onDismiss}
+            className="p-1 rounded-button text-text-muted hover:text-text-primary hover:bg-vg-elevated transition-colors flex-shrink-0"
+          >
+            <X className="w-3.5 h-3.5" />
+          </button>
+        </div>
       </div>
     </div>
   );

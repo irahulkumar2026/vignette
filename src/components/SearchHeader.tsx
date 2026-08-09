@@ -30,7 +30,7 @@ export const SearchHeader: React.FC<SearchHeaderProps> = ({
           {title}
         </h1>
         {count !== undefined && (
-          <span className="px-2 py-0.5 rounded-full bg-vg-tertiary text-text-secondary text-xs font-semibold font-mono">
+          <span className="px-2 py-0.5 rounded-full bg-vg-tertiary text-text-secondary text-xs font-semibold font-mono animate-scale-in">
             {count}
           </span>
         )}
@@ -45,11 +45,11 @@ export const SearchHeader: React.FC<SearchHeaderProps> = ({
             value={searchQuery}
             onChange={(e) => onSearchChange(e.target.value)}
             placeholder="Search titles, authors, files..."
-            className="w-full pl-9 pr-16 py-1.5 rounded-button bg-vg-tertiary border border-vg-border text-xs text-text-primary placeholder:text-text-muted focus:outline-none focus:border-accent-blue transition-colors"
+            className="w-full pl-9 pr-16 py-1.5 rounded-button bg-vg-tertiary border border-vg-border text-xs text-text-primary placeholder:text-text-muted focus:outline-none focus:border-accent-blue focus:ring-2 focus:ring-accent-blue/20 transition-all duration-150"
           />
           <button
             onClick={onOpenCommandPalette}
-            className="absolute right-2 px-1.5 py-0.5 rounded bg-vg-elevated text-text-muted text-[10px] font-mono flex items-center space-x-1 hover:text-text-primary transition-colors"
+            className="absolute right-2 px-1.5 py-0.5 rounded bg-vg-elevated/80 text-text-muted text-[10px] font-mono flex items-center space-x-1 hover:text-text-primary transition-colors border border-vg-border/50 backdrop-blur-sm"
             title="Open Command Palette (Ctrl+K)"
           >
             <Command className="w-3 h-3" />
@@ -89,7 +89,7 @@ export const SearchHeader: React.FC<SearchHeaderProps> = ({
         {/* Quick Import Button */}
         <button
           onClick={onOpenImport}
-          className="flex items-center space-x-1.5 px-3 py-1.5 rounded-button bg-accent-blue text-white font-medium text-xs hover:bg-accent-blue/90 transition-colors"
+          className="flex items-center space-x-1.5 px-3 py-1.5 rounded-button bg-accent-blue text-white font-medium text-xs hover:bg-accent-blue/90 hover:shadow-[0_0_16px_rgba(10,132,255,0.3)] transition-all duration-200"
         >
           <Plus className="w-4 h-4" />
           <span className="hidden sm:inline">Add Comic</span>
