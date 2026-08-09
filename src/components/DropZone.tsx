@@ -1,6 +1,6 @@
-import React, { useState, useRef } from 'react';
+import React, { useState, useRef, useEffect } from 'react';
 import { importComicFileProgressive, type ParsedComicResult } from '../utils';
-import { Upload, FileArchive, Loader2, AlertCircle, X } from 'lucide-react';
+import { Upload, FileArchive, Loader2, X } from 'lucide-react';
 import { type ToastMessage } from './Toast';
 
 interface DropZoneProps {
@@ -20,14 +20,20 @@ export const DropZone: React.FC<DropZoneProps> = ({
   const [isProcessing, setIsProcessing] = useState(false);
   const [currentFile, setCurrentFile] = useState<string | null>(null);
   const [progressMsg, setProgressMsg] = useState<string | null>(null);
-  const [errorMsg, setErrorMsg] = useState<string | null>(null);
   const fileInputRef = useRef<HTMLInputElement>(null);
+
+  useEffect(() => {
+    if (isOpen) {
+      setIsProcessing(false);
+      setProgressMsg(null);
+      setCurrentFile(null);
+    }
+  }, [isOpen]);
 
   const processFiles = async (files: FileList | File[]) => {
     if (!files || files.length === 0) return;
 
     setIsProcessing(true);
-    setErrorMsg(null);
 
     const fileList = Array.from(files);
     let importedCount = 0;
@@ -53,9 +59,13 @@ export const DropZone: React.FC<DropZoneProps> = ({
         }
       } catch (err) {
         console.error(`Failed to import ${file.name}:`, err);
-        setErrorMsg(
-          err instanceof Error ? err.message : `Failed to parse ${file.name}`
-        );
+        if (onShowToast) {
+          onShowToast({
+            type: 'error',
+            title: `Import Failed: ${file.name}`,
+            description: err instanceof Error ? err.message : `Failed to parse comic archive`,
+          });
+        }
       }
     }
 
@@ -67,7 +77,7 @@ export const DropZone: React.FC<DropZoneProps> = ({
       fileInputRef.current.value = '';
     }
 
-    // Trigger Android-style Vignette Toast Notification and close dialog immediately!
+    // Trigger Android/Apple-style Toast Notification and close dialog immediately!
     if (importedCount > 0) {
       if (onShowToast) {
         onShowToast({
@@ -80,7 +90,7 @@ export const DropZone: React.FC<DropZoneProps> = ({
         });
       }
 
-      // Close modal immediately!
+      // Close modal immediately
       if (onClose) onClose();
     }
   };
@@ -196,14 +206,6 @@ export const DropZone: React.FC<DropZoneProps> = ({
             </div>
           )}
         </div>
-
-        {/* Error message */}
-        {errorMsg && (
-          <div className="mt-4 p-3 rounded-button bg-accent-red/10 border border-accent-red/30 text-accent-red text-xs font-medium flex items-center space-x-2">
-            <AlertCircle className="w-4 h-4 flex-shrink-0" />
-            <span>{errorMsg}</span>
-          </div>
-        )}
       </div>
     </div>
   );

@@ -1,12 +1,11 @@
-/* Webtoon Continuous Scroll-Snap Engine */
+/* Webtoon Continuous Scroll Engine */
 .webtoon-container {
-  scroll-snap-type: y mandatory;
   scroll-behavior: smooth;
+  -webkit-overflow-scrolling: touch;
 }
 
 .webtoon-page {
-  scroll-snap-align: start;
-  scroll-snap-stop: always;
+  scroll-snap-align: none;
 }
 
 /* Page Crossfade Transitions */

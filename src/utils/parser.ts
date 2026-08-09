@@ -72,14 +72,26 @@ const IMAGE_EXTENSIONS = new Set([
   'gif',
   'avif',
   'bmp',
+  'tiff',
+  'tif',
+  'heic',
+  'heif',
+  'jxl',
 ]);
 
 /**
  * Determine if a file path is a supported image format.
  */
 export function isImageFile(fileName: string): boolean {
-  if (fileName.startsWith('__MACOSX') || fileName.includes('/.')) return false;
-  const ext = fileName.split('.').pop()?.toLowerCase();
+  if (!fileName) return false;
+  const normalized = fileName.replace(/\\/g, '/');
+  const parts = normalized.split('/');
+  const baseName = parts[parts.length - 1];
+
+  if (!baseName) return false;
+  if (baseName.startsWith('.') || parts.includes('__MACOSX')) return false;
+
+  const ext = baseName.split('.').pop()?.toLowerCase();
   return ext ? IMAGE_EXTENSIONS.has(ext) : false;
 }
 
@@ -306,9 +318,17 @@ export async function parseComicArchive(file: File): Promise<ParsedComicResult> 
   const lowerName = file.name.toLowerCase();
 
   if (lowerName.endsWith('.cbr') || lowerName.endsWith('.rar')) {
-    return await parseCbrArchive(file);
+    try {
+      return await parseCbrArchive(file);
+    } catch {
+      return await parseCbzArchive(file);
+    }
   } else if (lowerName.endsWith('.cbz') || lowerName.endsWith('.zip')) {
-    return await parseCbzArchive(file);
+    try {
+      return await parseCbzArchive(file);
+    } catch {
+      return await parseCbrArchive(file);
+    }
   } else {
     try {
       return await parseCbzArchive(file);
@@ -459,9 +479,17 @@ export async function parseComicArchiveLazy(file: File): Promise<LazyComicReader
   const lowerName = file.name.toLowerCase();
 
   if (lowerName.endsWith('.cbr') || lowerName.endsWith('.rar')) {
-    return await parseCbrArchiveLazy(file);
+    try {
+      return await parseCbrArchiveLazy(file);
+    } catch {
+      return await parseCbzArchiveLazy(file);
+    }
   } else if (lowerName.endsWith('.cbz') || lowerName.endsWith('.zip')) {
-    return await parseCbzArchiveLazy(file);
+    try {
+      return await parseCbzArchiveLazy(file);
+    } catch {
+      return await parseCbrArchiveLazy(file);
+    }
   } else {
     try {
       return await parseCbzArchiveLazy(file);

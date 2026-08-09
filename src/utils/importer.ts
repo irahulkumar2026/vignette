@@ -66,8 +66,9 @@ export async function importComicFileProgressive(
           const currentImported = i + 1;
           const isFinished = currentImported >= totalPages;
 
-          // Update progress status every 3 pages or at finish
-          if (currentImported % 3 === 0 || isFinished) {
+          // Update progress status every ~10% of pages or at finish
+          const step = Math.max(5, Math.floor(totalPages / 10));
+          if (currentImported % step === 0 || isFinished) {
             await updateComicImportProgress(comicId, currentImported, isFinished);
             if (onProgress) onProgress(currentImported, totalPages);
           }

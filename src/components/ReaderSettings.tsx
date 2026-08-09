@@ -1,8 +1,15 @@
-import React from 'react';
-import { Sun, Layers, ArrowLeftRight, Hash, Eye, X } from 'lucide-react';
+import React, { useEffect } from 'react';
+import { Sun, Layers, ArrowLeftRight, Hash, Eye, Sparkles, X, Square, Columns, Rows } from 'lucide-react';
+import { useTheme } from '../context/ThemeContext';
 
 export type ReadingMode = 'single' | 'spread' | 'webtoon';
 export type ReaderBgColor = 'black' | 'dark' | 'sepia';
+
+const MODE_OPTIONS: { id: ReadingMode; label: string; Icon: React.FC<{ className?: string }> }[] = [
+  { id: 'single', label: 'Single', Icon: Square },
+  { id: 'spread', label: 'Spread', Icon: Columns },
+  { id: 'webtoon', label: 'Webtoon', Icon: Rows },
+];
 
 export interface ReaderConfig {
   mode: ReadingMode;
@@ -11,6 +18,7 @@ export interface ReaderConfig {
   isRtl: boolean; // Right-to-Left manga mode
   preloadAdjacent: boolean;
   showPageNumbers: boolean;
+  enableAnimations: boolean;
   bgColor: ReaderBgColor;
 }
 
@@ -27,12 +35,18 @@ export const ReaderSettings: React.FC<ReaderSettingsProps> = ({
   config,
   onChangeConfig,
 }) => {
+  const { theme, setTheme } = useTheme();
+  useEffect(() => {
+    const animationsState = config.enableAnimations !== false ? 'enabled' : 'disabled';
+    document.documentElement.setAttribute('data-animations', animationsState);
+  }, [config.enableAnimations]);
+
   if (!isOpen) return null;
 
   return (
     <div
       onClick={onClose}
-      className="fixed inset-0 z-50 flex items-center justify-center p-4 surface-overlay backdrop-blur-sm animate-fade-in select-none"
+      className="fixed inset-0 z-[100] flex items-center justify-center p-4 surface-overlay backdrop-blur-sm animate-fade-in select-none"
     >
       <div
         onClick={(e) => e.stopPropagation()}
@@ -76,17 +90,18 @@ export const ReaderSettings: React.FC<ReaderSettingsProps> = ({
           <div>
             <span className="block font-semibold text-text-primary mb-2">Reading Mode</span>
             <div className="grid grid-cols-3 gap-1 p-1 rounded-button bg-vg-tertiary border border-vg-border">
-              {(['single', 'spread', 'webtoon'] as ReadingMode[]).map((mode) => (
+              {MODE_OPTIONS.map(({ id, label, Icon }) => (
                 <button
-                  key={mode}
-                  onClick={() => onChangeConfig({ mode })}
-                  className={`py-1.5 px-2 rounded-button text-[11px] font-semibold capitalize transition-colors ${
-                    config.mode === mode
+                  key={id}
+                  onClick={() => onChangeConfig({ mode: id })}
+                  className={`flex items-center justify-center space-x-1.5 py-1.5 px-2 rounded-button text-[11px] font-semibold capitalize transition-colors ${
+                    config.mode === id
                       ? 'bg-vg-elevated text-text-primary shadow-sm'
                       : 'text-text-secondary hover:text-text-primary'
                   }`}
                 >
-                  {mode}
+                  <Icon className="w-3.5 h-3.5" />
+                  <span>{label}</span>
                 </button>
               ))}
             </div>
@@ -114,6 +129,26 @@ export const ReaderSettings: React.FC<ReaderSettingsProps> = ({
 
           {/* Toggles */}
           <div className="space-y-3 pt-2 border-t border-vg-border">
+            {/* Enable UI Animations Toggle */}
+            <div className="flex items-center justify-between">
+              <span className="font-medium text-text-primary flex items-center space-x-2">
+                <Sparkles className="w-3.5 h-3.5 text-accent-purple" />
+                <span>Enable UI Animations</span>
+              </span>
+              <button
+                onClick={() => onChangeConfig({ enableAnimations: !config.enableAnimations })}
+                className={`w-10 h-5 rounded-full p-0.5 transition-colors relative ${
+                  config.enableAnimations ? 'bg-accent-blue' : 'bg-vg-tertiary'
+                }`}
+              >
+                <div
+                  className={`w-4 h-4 rounded-full bg-white transition-transform ${
+                    config.enableAnimations ? 'translate-x-5' : 'translate-x-0'
+                  }`}
+                />
+              </button>
+            </div>
+
             {/* RTL Mode Toggle */}
             <div className="flex items-center justify-between">
               <span className="font-medium text-text-primary flex items-center space-x-2">
@@ -175,29 +210,31 @@ export const ReaderSettings: React.FC<ReaderSettingsProps> = ({
             </div>
           </div>
 
-          {/* Background Color Selector */}
+          {/* Unified Theme & Canvas Background Selector */}
           <div className="pt-2 border-t border-vg-border">
-            <span className="block font-semibold text-text-primary mb-2">Canvas Background</span>
-            <div className="flex items-center space-x-3">
+            <span className="block font-semibold text-text-primary mb-2">Theme & Canvas Background</span>
+            <div className="grid grid-cols-2 gap-2">
               {[
-                { id: 'black', label: 'Black', color: '#000000' },
-                { id: 'dark', label: 'Dark Gray', color: '#1c1c1e' },
-                { id: 'sepia', label: 'Sepia', color: '#2b261f' },
-              ].map((bg) => (
+                { id: 'dark', label: 'Dark Mode', bg: '#000000' },
+                { id: 'light', label: 'Light Mode', bg: '#ffffff' },
+              ].map((t) => (
                 <button
-                  key={bg.id}
-                  onClick={() => onChangeConfig({ bgColor: bg.id as ReaderBgColor })}
-                  className={`flex items-center space-x-2 px-3 py-1.5 rounded-button text-xs transition-colors border ${
-                    config.bgColor === bg.id
-                      ? 'border-accent-blue text-text-primary'
-                      : 'border-vg-border text-text-secondary hover:text-text-primary'
+                  key={t.id}
+                  onClick={() => {
+                    setTheme(t.id as any);
+                    onChangeConfig({ bgColor: t.id as ReaderBgColor });
+                  }}
+                  className={`flex items-center justify-center space-x-2 py-2 px-3 rounded-button text-xs font-semibold transition-all border ${
+                    theme === t.id
+                      ? 'border-accent-blue bg-vg-elevated text-text-primary shadow-xs'
+                      : 'border-vg-border text-text-secondary hover:text-text-primary hover:bg-vg-tertiary'
                   }`}
                 >
                   <span
-                    className="w-3 h-3 rounded-full border border-white/20"
-                    style={{ backgroundColor: bg.color }}
+                    className="w-3.5 h-3.5 rounded-full border border-black/20 flex-shrink-0"
+                    style={{ backgroundColor: t.bg }}
                   />
-                  <span>{bg.label}</span>
+                  <span>{t.label}</span>
                 </button>
               ))}
             </div>

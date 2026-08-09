@@ -22,6 +22,7 @@ interface SidebarProps {
   isCollapsed: boolean;
   onToggleCollapse: () => void;
   onOpenImport: () => void;
+  onOpenSettings?: () => void;
   tags?: string[];
   selectedTag?: string | null;
   onSelectTag?: (tag: string | null) => void;
@@ -33,6 +34,7 @@ export const Sidebar: React.FC<SidebarProps> = ({
   isCollapsed,
   onToggleCollapse,
   onOpenImport,
+  onOpenSettings,
   tags = ['Superhero', 'Manga', 'Indie', 'Sci-Fi'],
   selectedTag,
   onSelectTag,
@@ -179,6 +181,7 @@ export const Sidebar: React.FC<SidebarProps> = ({
 
         {/* Settings item */}
         <button
+          onClick={onOpenSettings}
           className={`w-full flex items-center space-x-3 px-3 py-2 rounded-button text-xs font-medium text-text-secondary hover:text-text-primary hover:bg-vg-elevated transition-colors ${
             isCollapsed ? 'justify-center px-0' : ''
           }`}

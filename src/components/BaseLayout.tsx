@@ -4,6 +4,7 @@ import { SearchHeader } from './SearchHeader';
 import { DropZone } from './DropZone';
 import { CommandPalette } from './CommandPalette';
 import { Toast, type ToastMessage } from './Toast';
+import { ReaderSettings, type ReaderConfig } from './ReaderSettings';
 import { type ComicMetadata } from '../db';
 
 interface BaseLayoutProps {
@@ -36,6 +37,17 @@ export const BaseLayout: React.FC<BaseLayoutProps> = ({
   const [isSidebarCollapsed, setIsSidebarCollapsed] = useState(false);
   const [isImportOpen, setIsImportOpen] = useState(false);
   const [isCommandPaletteOpen, setIsCommandPaletteOpen] = useState(false);
+  const [isSettingsOpen, setIsSettingsOpen] = useState(false);
+  const [globalConfig, setGlobalConfig] = useState<ReaderConfig>({
+    mode: 'single',
+    brightness: 100,
+    pageGap: 0,
+    isRtl: false,
+    preloadAdjacent: true,
+    showPageNumbers: true,
+    enableAnimations: true,
+    bgColor: 'black',
+  });
   const [toast, setToast] = useState<ToastMessage | null>(null);
 
   const showToast = (toastInput: Omit<ToastMessage, 'id'>) => {
@@ -72,6 +84,7 @@ export const BaseLayout: React.FC<BaseLayoutProps> = ({
         isCollapsed={isSidebarCollapsed}
         onToggleCollapse={() => setIsSidebarCollapsed(!isSidebarCollapsed)}
         onOpenImport={handleOpenImport}
+        onOpenSettings={() => setIsSettingsOpen(true)}
         selectedTag={selectedTag}
         onSelectTag={onSelectTag}
       />
@@ -114,6 +127,14 @@ export const BaseLayout: React.FC<BaseLayoutProps> = ({
         onSelectComic={onOpenComic}
         onSelectView={onSelectView}
         onOpenImport={handleOpenImport}
+      />
+
+      {/* Settings Modal */}
+      <ReaderSettings
+        isOpen={isSettingsOpen}
+        onClose={() => setIsSettingsOpen(false)}
+        config={globalConfig}
+        onChangeConfig={(updates) => setGlobalConfig((prev) => ({ ...prev, ...updates }))}
       />
 
       {/* Android/Apple-Style Floating Toast Notification */}
